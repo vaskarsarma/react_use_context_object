@@ -5,6 +5,9 @@ import Cockpit from "../components/Cockpit/Cockpit";
 import AUX from "../hoc/Hoc-aux";
 import WithClasses from "../hoc/WithClasses";
 
+// React V16.3 featuers
+export const AuthContext= React.createContext(false);
+
 /*function App() {
   return (
     <div className="App">
@@ -25,7 +28,7 @@ class App extends Component {
       ],
       showPerson: false,
       toggleClickCount: 0,
-      authenticate: false
+      authenticated: false
     };
   }
 
@@ -41,7 +44,8 @@ class App extends Component {
     console.log("[Update App.JS] - inside shouldComponentUpdate");
     return (
       nextState.persons !== this.state.persons ||
-      nextState.showPerson !== this.state.showPerson
+      nextState.showPerson !== this.state.showPerson ||
+      nextState.authenticated !== this.state.authenticated
     );
   }
 
@@ -87,8 +91,10 @@ class App extends Component {
   };
 
   loginHandler =() =>{
-    this.setState({authenticate: true});
-    console.log("login handler clicked : " + this.state.authenticate);
+    console.log("login handler clicked : " + this.state.authenticated);
+    const isAuthenticated= this.state.authenticated;
+    this.setState({authenticated: !isAuthenticated});
+    console.log("login handler clicked : " + this.state.authenticated);
   }
 
   render() {
@@ -102,7 +108,6 @@ class App extends Component {
           persons={this.state.persons}
           clicked={this.deleteNameHandler}
           changed={this.nameChangedHandler}
-          isAuthnticated= { this.state.authenticate}
         />
       );
     }
@@ -123,7 +128,9 @@ class App extends Component {
           clicked={this.toggleNameHandler}
           login={this.loginHandler}
         />
-        {person}
+        <AuthContext.Provider value={this.state.authenticated}>
+          {person}
+        </AuthContext.Provider>
       </AUX>
     );
 

@@ -3,6 +3,7 @@ import classes from "./Person.css";
 import AUX from "../../../hoc/Hoc-aux";
 import WithClasses from "../../../hoc/WithClasses";
 import PropTypes from "prop-types";
+import {AuthContext} from "../../../containers/App";
 
 class Person extends Component {
   constructor(props) {
@@ -24,8 +25,9 @@ class Person extends Component {
     console.log("[Person.JS] - inside render");
     return (
       <AUX>
-        {this.props.isAuthnticated? 
-        <h2> I am Authenticated</h2> : null }  
+        <AuthContext.Consumer>
+          { (auth) => auth ? <h2> I am Authenticated</h2> : null }
+        </AuthContext.Consumer>          
         
         <h2 onClick={this.props.click}>
           My name is {this.props.name} and I am {this.props.age} years old!!!
